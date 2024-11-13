@@ -66,13 +66,6 @@ func main() {
 	}
 }
 
-func printNaturals(n int) {
-	if n > 0 {
-		printNaturals(n - 1)
-		fmt.Println(n)
-	}
-}
-
 func sumNaturals(n int) int {
 	if n == 0 {
 		return 0
