@@ -1,8 +1,8 @@
-package main
+package functions
 
-func sumNaturals(n int) int {
+func SumNaturals(n int) int {
 	if n == 0 {
 		return 0
 	}
-	return n + sumNaturals(n-1)
+	return n + SumNaturals(n-1)
 }

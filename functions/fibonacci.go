@@ -1,8 +1,8 @@
-package main
+package functions
 
-func fibonacci(n int) int {
+func Fibonacci(n int) int {
 	if n <= 1 {
 		return n
 	}
-	return fibonacci(n-1) + fibonacci(n-2)
+	return Fibonacci(n-1) + Fibonacci(n-2)
 }

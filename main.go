@@ -34,7 +34,7 @@ func main() {
 		case 3:
 			fmt.Print("Digite um número: ")
 			fmt.Scan(&n)
-			printNaturals(n)
+			functions.PrintNaturals(n)
 		case 4:
 			fmt.Print("Digite um número: ")
 			fmt.Scan(&n)

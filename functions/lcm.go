@@ -1,5 +1,5 @@
-package main
+package functions
 
-func lcm(a, b int) int {
-	return (a * b) / gcd(a, b)
+func Lcm(a, b int) int {
+	return (a * b) / Gcd(a, b)
 }

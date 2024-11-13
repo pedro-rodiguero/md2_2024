@@ -1,10 +1,10 @@
-package main
+package functions
 
 import "fmt"
 
-func printNaturals(n int) {
+func PrintNaturals(n int) {
 	if n > 0 {
-		printNaturals(n - 1)
+		PrintNaturals(n - 1)
 		fmt.Println(n)
 	}
 }

@@ -1,8 +1,8 @@
-package main
+package functions
 
-func gcd(a, b int) int {
+func Gcd(a, b int) int {
 	if b == 0 {
 		return a
 	}
-	return gcd(b, a%b)
+	return Gcd(b, a%b)
 }
