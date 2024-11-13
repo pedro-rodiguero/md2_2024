@@ -66,10 +66,6 @@ func main() {
 	}
 }
 
-func lcm(a, b int) int {
-	return (a * b) / gcd(a, b)
-}
-
 func additionTable(n int) {
 	fmt.Printf("Tabela Z_%d para adição modular:\n", n)
 	for i := 0; i < n; i++ {
