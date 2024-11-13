@@ -3,7 +3,20 @@ package main
 import (
 	"atividade/functions"
 	"fmt"
+	"os"
+	"os/exec"
+	"time"
 )
+
+func clearScreen() {
+	for i := 3; i > 0; i-- {
+		fmt.Printf("Limpando tela em %d...\n", i)
+		time.Sleep(1 * time.Second)
+	}
+	cmd := exec.Command("clear")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+}
 
 func main() {
 	var choice, n, a, b int
@@ -64,5 +77,6 @@ func main() {
 		default:
 			fmt.Println("Opção inválida!")
 		}
+		clearScreen()
 	}
 }
