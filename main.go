@@ -1,6 +1,7 @@
 package main
 
 import (
+	"atividade/functions"
 	"fmt"
 )
 
@@ -25,11 +26,11 @@ func main() {
 		case 1:
 			fmt.Print("Digite um número: ")
 			fmt.Scan(&n)
-			fmt.Printf("Fatorial de %d é %d\n", n, factorial(n))
+			fmt.Printf("Fatorial de %d é %d\n", n, functions.Factorial(n))
 		case 2:
 			fmt.Print("Digite um número: ")
 			fmt.Scan(&n)
-			fmt.Printf("Fibonacci de %d é %d\n", n, fibonacci(n))
+			fmt.Printf("Fibonacci de %d é %d\n", n, functions.Fibonacci(n))
 		case 3:
 			fmt.Print("Digite um número: ")
 			fmt.Scan(&n)
@@ -37,27 +38,27 @@ func main() {
 		case 4:
 			fmt.Print("Digite um número: ")
 			fmt.Scan(&n)
-			fmt.Printf("Somatório de 1 a %d é %d\n", n, sumNaturals(n))
+			fmt.Printf("Somatório de 1 a %d é %d\n", n, functions.SumNaturals(n))
 		case 5:
 			fmt.Print("Digite o primeiro número: ")
 			fmt.Scan(&a)
 			fmt.Print("Digite o segundo número: ")
 			fmt.Scan(&b)
-			fmt.Printf("MDC de %d e %d é %d\n", a, b, gcd(a, b))
+			fmt.Printf("MDC de %d e %d é %d\n", a, b, functions.Gcd(a, b))
 		case 6:
 			fmt.Print("Digite o primeiro número: ")
 			fmt.Scan(&a)
 			fmt.Print("Digite o segundo número: ")
 			fmt.Scan(&b)
-			fmt.Printf("MMC de %d e %d é %d\n", a, b, lcm(a, b))
+			fmt.Printf("MMC de %d e %d é %d\n", a, b, functions.Lcm(a, b))
 		case 7:
 			fmt.Print("Digite um número: ")
 			fmt.Scan(&n)
-			additionTable(n)
+			functions.AdditionTable(n)
 		case 8:
 			fmt.Print("Digite um número: ")
 			fmt.Scan(&n)
-			multiplicationTable(n)
+			functions.MultiplicationTable(n)
 		case 9:
 			return
 		default:
