@@ -66,13 +66,6 @@ func main() {
 	}
 }
 
-func sumNaturals(n int) int {
-	if n == 0 {
-		return 0
-	}
-	return n + sumNaturals(n-1)
-}
-
 func gcd(a, b int) int {
 	if b == 0 {
 		return a
