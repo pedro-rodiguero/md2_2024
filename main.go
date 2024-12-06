@@ -2,11 +2,22 @@ package main
 
 import (
 	"atividade/functions"
+	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 	"os/exec"
 	"time"
 )
+
+type Request struct {
+	Choice int `json:"choice"`
+	Input  struct {
+		N int `json:"n"`
+		A int `json:"a"`
+		B int `json:"b"`
+	} `json:"input"`
+}
 
 func clearScreen() {
 	for i := 3; i > 0; i-- {
@@ -18,65 +29,50 @@ func clearScreen() {
 	cmd.Run()
 }
 
-func main() {
-	var choice, n, a, b int
-
-	for {
-		fmt.Println("Menu:")
-		fmt.Println("1. Calcular n! (Fatorial)")
-		fmt.Println("2. Sequência de Fibonacci")
-		fmt.Println("3. Imprimir números naturais de 1 a n")
-		fmt.Println("4. Somatório de 1 a n")
-		fmt.Println("5. Algoritmo de Euclides para o cálculo do MDC")
-		fmt.Println("6. Calcular o MMC(a,b)")
-		fmt.Println("7. Tabela Z_n para adição modular")
-		fmt.Println("8. Tabela Z_n para multiplicação modular")
-		fmt.Println("9. Sair")
-		fmt.Print("Escolha uma opção: ")
-		fmt.Scan(&choice)
-
-		switch choice {
-		case 1:
-			fmt.Print("Digite um número: ")
-			fmt.Scan(&n)
-			fmt.Printf("Fatorial de %d é %d\n", n, functions.Factorial(n))
-		case 2:
-			fmt.Print("Digite um número: ")
-			fmt.Scan(&n)
-			fmt.Printf("Fibonacci de %d é %d\n", n, functions.Fibonacci(n))
-		case 3:
-			fmt.Print("Digite um número: ")
-			fmt.Scan(&n)
-			functions.PrintNaturals(n)
-		case 4:
-			fmt.Print("Digite um número: ")
-			fmt.Scan(&n)
-			fmt.Printf("Somatório de 1 a %d é %d\n", n, functions.SumNaturals(n))
-		case 5:
-			fmt.Print("Digite o primeiro número: ")
-			fmt.Scan(&a)
-			fmt.Print("Digite o segundo número: ")
-			fmt.Scan(&b)
-			fmt.Printf("MDC de %d e %d é %d\n", a, b, functions.Gcd(a, b))
-		case 6:
-			fmt.Print("Digite o primeiro número: ")
-			fmt.Scan(&a)
-			fmt.Print("Digite o segundo número: ")
-			fmt.Scan(&b)
-			fmt.Printf("MMC de %d e %d é %d\n", a, b, functions.Lcm(a, b))
-		case 7:
-			fmt.Print("Digite um número: ")
-			fmt.Scan(&n)
-			functions.AdditionTable(n)
-		case 8:
-			fmt.Print("Digite um número: ")
-			fmt.Scan(&n)
-			functions.MultiplicationTable(n)
-		case 9:
-			return
-		default:
-			fmt.Println("Opção inválida!")
-		}
-		clearScreen()
+func handler(w http.ResponseWriter, r *http.Request) {
+	var req Request
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
+
+	var result string
+	switch req.Choice {
+	case 1:
+		result = fmt.Sprintf("Fatorial de %d é %d", req.Input.N, functions.Factorial(req.Input.N))
+	case 2:
+		result = fmt.Sprintf("Fibonacci de %d é %d", req.Input.N, functions.Fibonacci(req.Input.N))
+	case 3:
+		result = fmt.Sprintf("Números naturais de 1 a %d: ", req.Input.N)
+		functions.PrintNaturals(req.Input.N)
+	case 4:
+		result = fmt.Sprintf("Somatório de 1 a %d é %d", req.Input.N, functions.SumNaturals(req.Input.N))
+	case 5:
+		result = fmt.Sprintf("MDC de %d e %d é %d", req.Input.A, req.Input.B, functions.Gcd(req.Input.A, req.Input.B))
+	case 6:
+		result = fmt.Sprintf("MMC de %d e %d é %d", req.Input.A, req.Input.B, functions.Lcm(req.Input.A, req.Input.B))
+	case 7:
+		result = fmt.Sprintf("Tabela Z_%d para adição modular:\n", req.Input.N)
+		functions.AdditionTable(req.Input.N)
+	case 8:
+		result = fmt.Sprintf("Tabela Z_%d para multiplicação modular:\n", req.Input.N)
+		functions.MultiplicationTable(req.Input.N)
+	case 9:
+		result = "Saindo..."
+	default:
+		result = "Opção inválida!"
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{"result": result})
+}
+
+func main() {
+	http.HandleFunc("/", handler)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	fmt.Printf("Listening on port %s...\n", port)
+	http.ListenAndServe(":"+port, nil)
 }
