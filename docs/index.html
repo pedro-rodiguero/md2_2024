@@ -8,7 +8,29 @@
 </head>
 <body>
     <h1>Bem-vindo ao Projeto Atividade</h1>
-    <p>Este é o frontend do projeto Atividade.</p>
+    <form id="atividade-form">
+        <label for="choice">Escolha uma opção:</label>
+        <select id="choice" name="choice">
+            <option value="">Selecione</option>
+            <option value="1">Calcular n! (Fatorial)</option>
+            <option value="2">Sequência de Fibonacci</option>
+            <option value="3">Imprimir números naturais de 1 a n</option>
+            <option value="4">Somatório de 1 a n</option>
+            <option value="5">Algoritmo de Euclides para o cálculo do MDC</option>
+            <option value="6">Calcular o MMC(a,b)</option>
+            <option value="7">Tabela Z_n para adição modular</option>
+            <option value="8">Tabela Z_n para multiplicação modular</option>
+            <option value="9">Sair</option>
+        </select>
+        <div id="input-fields">
+            <!-- Input fields will be dynamically added here -->
+        </div>
+        <button type="submit">Enviar</button>
+    </form>
+    <div id="result">
+        <h2>Resultado:</h2>
+        <p id="result-text"></p>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
