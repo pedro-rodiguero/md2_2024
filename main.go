@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"os/exec"
-	"time"
 )
 
 type Request struct {
@@ -17,16 +15,6 @@ type Request struct {
 		A int `json:"a"`
 		B int `json:"b"`
 	} `json:"input"`
-}
-
-func clearScreen() {
-	for i := 3; i > 0; i-- {
-		fmt.Printf("Limpando tela em %d...\n", i)
-		time.Sleep(1 * time.Second)
-	}
-	cmd := exec.Command("clear")
-	cmd.Stdout = os.Stdout
-	cmd.Run()
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -74,6 +62,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"result": result})
 }
+
 func main() {
 	http.HandleFunc("/", handler)
 	port := os.Getenv("PORT")

@@ -13,7 +13,7 @@ const Menu = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://2024md2.netlify.app', { choice, input });
+            const response = await axios.post(' https://elaborate-sprite-323be2.netlify.app', { choice, input });
             setResult(response.data.result);
         } catch (error) {
             console.error(error);
