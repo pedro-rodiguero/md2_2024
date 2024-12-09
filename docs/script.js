@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('https://my-app.netlify.app', {
+            const response = await fetch('https://2024md2.netlify.app', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
