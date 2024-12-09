@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('https://elaborate-sprite-323be2.netlify.app', {
+            const response = await fetch('https://pedrorodiguero.software.com', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
