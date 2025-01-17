@@ -1,6 +1,10 @@
+#include <chrono>
 #include <iostream>
 #include <numeric>
+#include <random>
+#include <thread>
 #include <vector>
+
 using namespace std;
 
 // Função para calcular o inverso modular usando o algoritmo extendido de
@@ -51,31 +55,67 @@ int chineseRemainderTheorem(const vector<int> &num, const vector<int> &rem,
     return result % prod;
 }
 
+void delayPrint(const string &message, int delay_ms) {
+    for (char c : message) {
+        cout << c;
+        cout.flush();
+        this_thread::sleep_for(chrono::milliseconds(delay_ms));
+    }
+}
+
+bool areCoprime(int a, int b) { return gcd(a, b) == 1; }
+
 int main() {
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> dist_num(2,
+                                        10); // Números aleatórios entre 2 e 10
+    uniform_int_distribution<> dist_rem(1, 9); // Restos aleatórios entre 1 e 9
+
     vector<int> num(4), rem(4);
-    int k;
+    int k = 1;
 
-    cout << "Digite o número de equações (até 4): ";
-    cin >> k;
-
-    if (k > 4) {
-        cout << "Número de equações não pode ser maior que 4." << endl;
-        return 1;
-    }
-
-    for (int i = 0; i < k; i++) {
-        cout << "Digite o número da equação " << i + 1 << ": ";
-        cin >> num[i];
-        if (num[i] <= 0) {
-            cout << "O número deve ser positivo e maior que zero." << endl;
-            return 1;
+    while (k <= 4) {
+        for (int i = 0; i < k; i++) {
+            num[i] = dist_num(gen);
+            rem[i] = dist_rem(gen);
         }
-        cout << "Digite o resto da equação " << i + 1 << ": ";
-        cin >> rem[i];
-    }
 
-    int result = chineseRemainderTheorem(num, rem, k);
-    cout << "O resultado é " << result << endl;
+        // Verificar se os números são coprimos
+        bool valid = true;
+        for (int i = 0; i < k; i++) {
+            for (int j = i + 1; j < k; j++) {
+                if (!areCoprime(num[i], num[j])) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (!valid)
+                break;
+        }
+
+        if (!valid)
+            continue;
+
+        cout << "Resolvendo para " << k << " equacao(oes):" << endl;
+
+        for (int i = 0; i < k; i++) {
+            cout << "Numero da equacao " << i + 1 << ": ";
+            delayPrint(to_string(num[i]) + "\n", 500);
+            cout << "Resto da equacao " << i + 1 << ": ";
+            delayPrint(to_string(rem[i]) + "\n", 500);
+        }
+
+        try {
+            int result = chineseRemainderTheorem(num, rem, k);
+            printf("O resultado e ");
+            delayPrint(to_string(result) + "\n\n", 1000);
+        } catch (const exception &e) {
+            cout << "Erro ao calcular o resultado: " << e.what() << endl;
+        }
+
+        k++;
+    }
 
     return 0;
 }
