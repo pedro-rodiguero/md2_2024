@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-// Função para calcular o GCD (Greatest Common Divisor)
-int gcd(int a, int b) {
+// Função para calcular o MDC
+int mdc(int a, int b) {
     while (b != 0) {
         int t = b;
         b = a % b;
@@ -46,6 +47,21 @@ long long modExp(long long base, long long exp, long long mod) {
     return result;
 }
 
+// Função para verificar se um número é primo
+int isPrime(int num) {
+    if (num <= 1)
+        return 0;
+    if (num <= 3)
+        return 1;
+    if (num % 2 == 0 || num % 3 == 0)
+        return 0;
+    for (int i = 5; i * i <= num; i += 6) {
+        if (num % i == 0 || num % (i + 2) == 0)
+            return 0;
+    }
+    return 1;
+}
+
 // Função para criptografar uma mensagem
 void encrypt(char *message, int e, int n, int blockSize) {
     printf("Mensagem criptografada: ");
@@ -69,20 +85,25 @@ void decrypt(long long *cipher, int length, int d, int n) {
 }
 
 int main() {
-    int p, q, e, blockSize;
-    printf("Digite os primos p e q: ");
-    scanf("%d %d", &p, &q);
+    srand(time(NULL));
+
+    // Gerar primos p e q aleatoriamente
+    int p, q;
+    do {
+        p = rand() % 100 + 2; // Gera um número entre 2 e 101
+    } while (!isPrime(p));
+    do {
+        q = rand() % 100 + 2; // Gera um número entre 2 e 101
+    } while (!isPrime(q) || q == p);
 
     int n = p * q;
     int phi = (p - 1) * (q - 1);
 
-    printf("Digite o número E: ");
-    scanf("%d", &e);
-
-    if (gcd(e, phi) != 1) {
-        printf("E deve ser coprimo com phi(n).\n");
-        return 1;
-    }
+    // Gerar E aleatoriamente que seja coprimo com phi
+    int e;
+    do {
+        e = rand() % (phi - 2) + 2; // Gera um número entre 2 e phi-1
+    } while (mdc(e, phi) != 1);
 
     int d = modInverse(e, phi);
     if (d == -1) {
@@ -90,19 +111,32 @@ int main() {
         return 1;
     }
 
-    printf("Digite o tamanho do bloco: ");
-    scanf("%d", &blockSize);
+    // Definir tamanho do bloco
+    int blockSize = 3;
 
-    char message[256];
-    printf("Digite a mensagem para criptografar (somente letras maiúsculas): ");
-    scanf("%s", message);
+    // Lista de frases geradas por IA
+    const char *phrases[25] = {
+        "HELLO",    "WORLD",       "CRYPTO",    "SECURE",     "MESSAGE",
+        "ENCRYPT",  "DECRYPT",     "PRIVACY",   "SAFETY",     "COMPUTER",
+        "SCIENCE",  "MATHEMATICS", "ALGORITHM", "SECURITY",   "NETWORK",
+        "INTERNET", "PROGRAM",     "SOFTWARE",  "HARDWARE",   "DATABASE",
+        "SYSTEM",   "ENGINEER",    "DEVELOPER", "TECHNOLOGY", "INNOVATION"};
 
-    encrypt(message, e, n, blockSize);
+    // Selecionar uma frase aleatória
+    const char *message = phrases[rand() % 25];
 
+    printf("Primos p: %d, q: %d\n", p, q);
+    printf("Número E: %d\n", e);
+    printf("Tamanho do bloco: %d\n", blockSize);
+    printf("Mensagem original: %s\n", message);
+
+    encrypt((char *)message, e, n, blockSize);
+
+    // Simular a entrada da mensagem criptografada
     long long cipher[256];
-    printf("Digite a mensagem criptografada (separada por espaços): ");
     for (int i = 0; i < strlen(message); i++) {
-        scanf("%lld", &cipher[i]);
+        int m = message[i] - 'A' + 11;
+        cipher[i] = modExp(m, e, n);
     }
 
     decrypt(cipher, strlen(message), d, n);

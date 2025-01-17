@@ -1,8 +1,6 @@
-#include <chrono>
 #include <iostream>
 #include <numeric>
 #include <random>
-#include <thread>
 #include <vector>
 
 using namespace std;
@@ -55,14 +53,6 @@ int chineseRemainderTheorem(const vector<int> &num, const vector<int> &rem,
     return result % prod;
 }
 
-void delayPrint(const string &message, int delay_ms) {
-    for (char c : message) {
-        cout << c;
-        cout.flush();
-        this_thread::sleep_for(chrono::milliseconds(delay_ms));
-    }
-}
-
 bool areCoprime(int a, int b) { return gcd(a, b) == 1; }
 
 int main() {
@@ -100,16 +90,13 @@ int main() {
         cout << "Resolvendo para " << k << " equacao(oes):" << endl;
 
         for (int i = 0; i < k; i++) {
-            cout << "Numero da equacao " << i + 1 << ": ";
-            delayPrint(to_string(num[i]) + "\n", 500);
-            cout << "Resto da equacao " << i + 1 << ": ";
-            delayPrint(to_string(rem[i]) + "\n", 500);
+            cout << "Numero da equacao " << i + 1 << ": " << num[i] << endl;
+            cout << "Resto da equacao " << i + 1 << ": " << rem[i] << endl;
         }
 
         try {
             int result = chineseRemainderTheorem(num, rem, k);
-            printf("O resultado e ");
-            delayPrint(to_string(result) + "\n\n", 1000);
+            cout << "O resultado e " << result << "\n\n";
         } catch (const exception &e) {
             cout << "Erro ao calcular o resultado: " << e.what() << endl;
         }
